@@ -11,7 +11,7 @@ window.onload = function() {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/html'
+                    'Content-Type': 'application/json'
                 }
             });
 
@@ -29,13 +29,16 @@ window.onload = function() {
     });
 
     const postForm = document.getElementById('create-post-form');
+
     postForm.addEventListener('submit', async function(event) {
         event.preventDefault();
+        const title = document.getElementById('title');
+        const body = document.getElementById('body');
 
         let formData = new FormData(event.target);
 
         try {
-            const response = await fetch('/api/posts', {
+            const response = await fetch('http://127.0.0.1:8000/api/posts', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -43,7 +46,7 @@ window.onload = function() {
                 },
                 body: JSON.stringify({
                     title: formData.get('title'),
-                    body: formData.get('content')
+                    body: formData.get('body')
                 })
             });
 
@@ -63,7 +66,7 @@ window.onload = function() {
         }
     });
 
-    async function _fetchAllPosts(token) {
+    async function fetchAllPosts(token) {
         try {
             const response = await fetch('http://127.0.0.1:8000/api/posts', {
                 method: 'GET',
